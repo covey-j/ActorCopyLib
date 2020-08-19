@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{e487ea2f-dbf7-49c6-bd70-00519f35c76c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{aa5d0d4d-2ef0-4aa0-a888-ffcf32f09a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{3d117d0b-ceca-4199-b674-ea5db60b8964}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PCH.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FormUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpellUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ActorUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EffectUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Papyrus.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ActorValueUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PerkUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NPCUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="test\SpellUtilTest.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\FormUtilTest.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\Test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TintMaskUtil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ActorUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ActorValueUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EffectUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FormUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NPCUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Papyrus.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCH.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PerkUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpellUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PlayerUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="test\SpellUtilTest.h">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\FormUtilTest.h">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\Test.h">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BSTArrayUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
+    <None Include="test\spreadsheets\spelltomespells.csv">
+      <Filter>test</Filter>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc" />
+  </ItemGroup>
+</Project>

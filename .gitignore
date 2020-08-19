@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/x64
+/.vs/ActorCopyLib/v16
+/packages
+/packages.config
