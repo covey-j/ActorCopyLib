@@ -78,6 +78,17 @@ namespace BSTArrayUtil {
     }
 
     template <class T>
+    BSTArray<T*> FilterByModID(BSTArray<T*> A, T* form) {
+        auto modID = [](T* b) {
+            return b ? b->formID >> 6 : 0;
+        };
+        auto filter = [=](T* b) {
+            return modID(form) == modID(b);
+        };
+        return Filter(A, filter);
+    }
+
+    template <class T>
     BSTArray<T*> FilterByValue(BSTArray<T*> A, std::function<uint32_t (T*)> func, uint32_t value) {
         BSTArray<T*> result;
         for (T* item : A)

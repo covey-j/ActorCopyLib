@@ -27,15 +27,16 @@ namespace NPCUtil {
 	private:
 		RE::TESNPC* destination;
 		RE::TESNPC* source;
-
-		BGSColorForm* GetDefaultHairColor(TESRace* race, SEX sex);
-		BGSTextureSet* GetDefaultFaceTexture(TESRace* race, SEX sex);
 	};
 
 	BSTArray<SpellItem*> GetSpells(TESNPC* npc);
+	BGSColorForm* GetDefaultHairColor(TESRace* race, SEX sex);
+	BGSTextureSet* GetDefaultFaceTexture(TESRace* race, SEX sex);
 	void RemoveAllHeadParts(TESNPC* npc);
 	void RemoveHeadPart(TESNPC* npc, TESNPC::HeadPartType type);
 	void SetActorBaseDataFlag(TESActorBaseData* actorBaseData, ACTOR_BASE_DATA::Flag flag, bool enable);
+	void SetFaceMorph(TESNPC* npc, float value, uint32_t n);
+	void SetFacePreset(TESNPC* npc, uint32_t value, uint32_t n);
 	void SetOppositeGenderAnimations(TESNPC* npc, bool useOppositeGenderAnims);
 	void SexChange(TESNPC* npc);
 }

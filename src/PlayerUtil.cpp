@@ -18,20 +18,19 @@ namespace PlayerUtil {
 		CopyFaceData();
 		CopyHeadParts();
 		CopyHeadRelatedData();
-		CopyHeight();
-		CopyWeight();
 		CopySkin();
 		CopyRace();
+		CopyWeight();
 		ActorUtil::ResetSkeleton(player);
-		ActorUtil::UpdateAppearance(player);
 		CopyBodyTintColor();
-		ResetRaceSexTintMasks(player);
-		// TODO: Copy TintMasks
+		ResetPlayerTintMasks(player);
 		player->DoReset3D(true);
 	}
 
 	void ActorToPlayerCopier::CopyRace() {
-		player->RE::Actor::SwitchRace(actor->race, true);
+		player->charGenRace = actor->GetRace();
+		player->RE::Actor::SwitchRace(actor->GetRace(), true);
+		ActorCopier::CopyRace();
 	}
 
 	void ModPerkPoints(PlayerCharacter* player, int mod) {
@@ -46,8 +45,9 @@ namespace PlayerUtil {
 		ActorUtil::RemoveSkillPerks(player);
 	}
 
-	void ResetRaceSexTintMasks(PlayerCharacter* player) {
-		using func_t = decltype(&ResetRaceSexTintMasks);
+	// Reallocates player->tintMasks and changes the player's tintMasks to those of the correct race/sex
+	void ResetPlayerTintMasks(PlayerCharacter* player) {
+		using func_t = decltype(&ResetPlayerTintMasks);
 		REL::Relocation<func_t> func{ REL::ID(39610) };
 		return func(player);
 	}

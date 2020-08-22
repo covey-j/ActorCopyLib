@@ -13,6 +13,7 @@ namespace Papyrus {
     }
 
     void CopyAppearanceToPlayer(StaticFunctionTag*, Actor* source) {
+        auto task = SKSE::GetTaskInterface();
         PlayerCharacter* player = RE::PlayerCharacter::GetSingleton();
         auto copier = PlayerUtil::ActorToPlayerCopier(player, source);
         copier.CopyAppearance();
@@ -98,9 +99,9 @@ namespace PapyrusTest {
         copier.CopyBodyTintColor();
     }
 
-    void ResetRaceSexTintMasks(StaticFunctionTag*) {
+    void ResetPlayerTintMasks(StaticFunctionTag*) {
         PlayerCharacter* player = RE::PlayerCharacter::GetSingleton();
-        PlayerUtil::ResetRaceSexTintMasks(player);
+        PlayerUtil::ResetPlayerTintMasks(player);
     }
 
     void DoReset3D(StaticFunctionTag*) {
@@ -124,7 +125,7 @@ namespace PapyrusTest {
         vm->RegisterFunction("CopyRace", "ActorCopyLibTestSuite", CopyRace);
         vm->RegisterFunction("UpdateAppearance", "ActorCopyLibTestSuite", UpdateAppearance);
         vm->RegisterFunction("CopyBodyTintColor", "ActorCopyLibTestSuite", CopyBodyTintColor);
-        vm->RegisterFunction("ResetRaceSexTintMasks", "ActorCopyLibTestSuite", ResetRaceSexTintMasks);
+        vm->RegisterFunction("ResetPlayerTintMasks", "ActorCopyLibTestSuite", ResetPlayerTintMasks);
         vm->RegisterFunction("DoReset3D", "ActorCopyLib", DoReset3D);
         vm->RegisterFunction("RunTestSuite", "ActorCopyLibTestSuite", RunTestSuite);
         

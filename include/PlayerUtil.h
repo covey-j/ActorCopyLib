@@ -17,5 +17,5 @@ namespace PlayerUtil {
 
 	void ModPerkPoints(PlayerCharacter* player, int mod);
 	void RefundPerks(PlayerCharacter* player);
-	void ResetRaceSexTintMasks(PlayerCharacter* player);
+	void ResetPlayerTintMasks(PlayerCharacter* player);
 }

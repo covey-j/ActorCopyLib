@@ -22,12 +22,12 @@ namespace NPCUtil {
 
 	void NPCCopier::CopyFaceDataMorphs() {
 		for (int i = 0; i < TESNPC::FaceData::Morphs::kTotal; i++)
-			destination->faceData->morphs[i] = source->faceData->morphs[i];
+			SetFaceMorph(destination, source->faceData->morphs[i], i);
 	}
 
 	void NPCCopier::CopyFaceDataParts() {
 		for (int i = 0; i < TESNPC::FaceData::Parts::kTotal; i++)
-			destination->faceData->parts[i] = source->faceData->parts[i];
+			SetFacePreset(destination, source->faceData->parts[i], i);
 	}
 
 	void NPCCopier::CopyFaceTexture() {
@@ -38,6 +38,8 @@ namespace NPCUtil {
 			faceTexture = GetDefaultFaceTexture(source->race, source->GetSex());
 		if (faceTexture)
 			destination->SetFaceTexture(faceTexture);
+		else
+			destination->SetFaceTexture(nullptr);
 	}
 
 	void NPCCopier::CopyGenderAnimations() {
@@ -88,18 +90,18 @@ namespace NPCUtil {
 	void NPCCopier::CopyWeight() {
 		destination->weight = source->GetWeight();
 	}
-	
-	BGSColorForm* NPCCopier::GetDefaultHairColor(TESRace* race, SEX sex) {
+
+	NPCCopier::~NPCCopier() {}
+
+	BGSColorForm* GetDefaultHairColor(TESRace* race, SEX sex) {
 		if (race && (race->data.flags & RACE_DATA::Flag::kFaceGenHead))
 			return race->faceRelatedData[sex]->defaultHairColor;
 	}
 
-	BGSTextureSet* NPCCopier::GetDefaultFaceTexture(TESRace* race, SEX sex) {
+	BGSTextureSet* GetDefaultFaceTexture(TESRace* race, SEX sex) {
 		if (race && (race->data.flags & RACE_DATA::Flag::kFaceGenHead))
 			return race->faceRelatedData[sex]->defaultFaceDetailsTextureSet;
 	}
-
-	NPCCopier::~NPCCopier() {}
 
 	BSTArray<SpellItem*> GetSpells(TESNPC* npc) {
 		BSTArray<SpellItem*> spells;
@@ -138,6 +140,18 @@ namespace NPCUtil {
 		REL::Relocation<func_t> func{ REL::ID(14261) };
 		return func(actorBaseData, flag, enable);
 	}
+
+	void SetFaceMorph(TESNPC* npc, float value, uint32_t n) {
+		using func_t = void (*)(TESNPC*, uint32_t, float);
+		REL::Relocation<func_t> func{ REL::ID(24183) };
+		return func(npc, n, value);
+	};
+
+	void SetFacePreset(TESNPC* npc, uint32_t value, uint32_t n) {
+		using func_t = decltype(&SetFacePreset);
+		REL::Relocation<func_t> func{ REL::ID(24185) };
+		return func(npc, n, value);
+	};
 
 	void SetOppositeGenderAnimations(TESNPC* npc, bool useOppositeGenderAnims) {
 		SetActorBaseDataFlag(npc, ACTOR_BASE_DATA::Flag::kOppositeGenderanims, useOppositeGenderAnims);

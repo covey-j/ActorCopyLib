@@ -74,5 +74,9 @@ extern "C" DLLEXPORT bool APIENTRY SKSEPlugin_Load(const SKSE::LoadInterface* a_
 		return false;
 	}	
 
+	if (!papyrus->Register(PapyrusTest::RegisterFuncs)) {
+		return false;
+	}
+
 	return true;
 }
