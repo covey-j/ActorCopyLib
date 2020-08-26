@@ -27,7 +27,7 @@ namespace SpellUtil {
         return BSTArrayUtil::Filter<SpellItem>(spells, filter);
     }
 
-    BSTArray<SpellItem*> FilterByCastingType(BSTArray<SpellItem*> spells, MagicSystem::CastingType type) {
+    BSTArray<SpellItem*> FilterByCastingType(BSTArray<SpellItem*> spells, RE::MagicSystem::CastingType type) {
         auto filter = [=](SpellItem* spell) {
             return spell->GetCastingType() == type;
         };
@@ -43,7 +43,7 @@ namespace SpellUtil {
         return BSTArrayUtil::Filter<SpellItem>(spells, filter);
     }
 
-    BSTArray<SpellItem*> FilterByDelivery(BSTArray<SpellItem*> spells, MagicSystem::Delivery delivery) {
+    BSTArray<SpellItem*> FilterByDelivery(BSTArray<SpellItem*> spells, RE::MagicSystem::Delivery delivery) {
         auto filter = [=](SpellItem* spell) {
             return spell->GetDelivery() == delivery;
         };
@@ -75,7 +75,7 @@ namespace SpellUtil {
         return BSTArrayUtil::Filter<SpellItem>(spells, filter);
     }
 
-    BSTArray<SpellItem*> FilterBySpellType(BSTArray<SpellItem*> spells, MagicSystem::SpellType type) {
+    BSTArray<SpellItem*> FilterBySpellType(BSTArray<SpellItem*> spells, RE::MagicSystem::SpellType type) {
         auto filter = [=](SpellItem* spell) {
             return spell->GetSpellType() == type;
         };

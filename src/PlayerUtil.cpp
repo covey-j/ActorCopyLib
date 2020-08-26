@@ -13,6 +13,8 @@ namespace PlayerUtil {
 	}
 
 	void ActorToPlayerCopier::CopyAppearance() {
+		if (!player)
+			return;
 		CopySex();
 		CopyGenderAnimations();
 		CopyFaceData();
@@ -24,20 +26,29 @@ namespace PlayerUtil {
 		ActorUtil::ResetSkeleton(player);
 		CopyBodyTintColor();
 		ResetPlayerTintMasks(player);
+		CopyTintMasks();
 		player->DoReset3D(true);
 	}
 
+	void ActorToPlayerCopier::CopyTintMasks() {
+		// TODO
+	}
+
 	void ActorToPlayerCopier::CopyRace() {
-		player->charGenRace = actor->GetRace();
-		player->RE::Actor::SwitchRace(actor->GetRace(), true);
-		ActorCopier::CopyRace();
+		if (player && actor) {
+			player->charGenRace = actor->GetRace();
+			player->RE::Actor::SwitchRace(actor->GetRace(), true);
+			ActorCopier::CopyRace();
+		}
 	}
 
 	void ModPerkPoints(PlayerCharacter* player, int mod) {
+		if (!player)
+			return;
 		if (mod < 0)
-			player->perkCount = std::max(player->perkCount + mod, 0);
+			player->perkCount = static_cast<uint8_t>(std::max(player->perkCount + mod, 0));
 		else
-			player->perkCount = std::min(player->perkCount + mod, 0xFF);
+			player->perkCount = static_cast<uint8_t>(std::min(player->perkCount + mod, 0xFF));
 	}
 
 	void RefundPerks(PlayerCharacter* player) {

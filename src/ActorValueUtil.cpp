@@ -1,5 +1,6 @@
 #include "ActorValueUtil.h"
 #include "PerkUtil.h"
+#include "BSTArrayUtil.h"
 
 namespace ActorValueUtil {
 	class ActorValueList {
@@ -10,11 +11,13 @@ namespace ActorValueUtil {
 		}
 		uint32_t	unk00;	// 00
 		uint32_t	pad04;	// 04
-		ActorValueInfo* avInfo[to_underlying(ActorValue::kTotal)]; //08
+		ActorValueInfo* avInfo[RE::to_underlying(ActorValue::kTotal)]; //08
 	};
+
 	ActorValueInfo* GetActorValueInfo(ActorValue av) {
-		return ActorValueList::GetSingleton()->avInfo[to_underlying(av)];
+		return ActorValueList::GetSingleton()->avInfo[RE::to_underlying(av)];
 	}
+
 	BSTArray<BGSPerk*> GetAllPerkRanks(BGSPerk* perk) {
 		BSTArray<BGSPerk*> perkRanks;
 		while (perk) {
@@ -23,16 +26,18 @@ namespace ActorValueUtil {
 		}
 		return perkRanks;
 	}
+
 	BSTArray<BGSPerk*> GetSkillPerks(ActorValue av) {
 		BSTArray<BGSPerk*> perks;
 		BSTArray<BGSSkillPerkTreeNode*> skillTreeNodes;
 		BGSSkillPerkTreeNode* root = GetSkillPerkTree(av);
 		skillTreeNodes = PerkUtil::DFS(root, skillTreeNodes);
 		for (BGSSkillPerkTreeNode* node : skillTreeNodes) {
-			perks = PerkUtil::Append(perks, GetAllPerkRanks(node->perk));
+			perks = BSTArrayUtil::Append<BGSPerk>(perks, GetAllPerkRanks(node->perk));
 		}
 		return perks;
 	}
+
 	BGSSkillPerkTreeNode* GetSkillPerkTree(ActorValue av) {
 		ActorValueInfo* avInfo = GetActorValueInfo(av);
 		return avInfo->perkTree;

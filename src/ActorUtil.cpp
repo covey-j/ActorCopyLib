@@ -1,15 +1,16 @@
 #include "ActorUtil.h"
+#include "ActorValueUtil.h"
 #include "PerkUtil.h"
 
 namespace ActorUtil {
 	ActorCopier::ActorCopier(Actor* destination, Actor* source) {
 		this->destination = destination;
 		this->source = source;
-		TESNPC* destinationBase = destination->GetActorBase();
-		TESNPC* sourceBase = source->GetActorBase();
+		TESNPC* destinationBase = destination ? destination->GetActorBase() : nullptr;
+		TESNPC* sourceBase = source ? source->GetActorBase() : nullptr;
 		baseCopier = NPCUtil::NPCCopier(destinationBase, sourceBase);
 	}
-
+	
 	void ActorCopier::AddSkillPerks() {
 		if (!source)
 			return;
@@ -17,8 +18,12 @@ namespace ActorUtil {
 			destination->AddPerk(perk);
 	}
 
-	void ActorCopier::AddSpells() {
-		AddSpellsFromList(destination, source->addedSpells);
+	void ActorCopier::CopyAttributes() {
+		if (destination && source) {
+			destination->SetActorValue(ActorValue::kHealth, source->GetActorValue(ActorValue::kHealth));
+			destination->SetActorValue(ActorValue::kMagicka, source->GetActorValue(ActorValue::kMagicka));
+			destination->SetActorValue(ActorValue::kStamina, source->GetActorValue(ActorValue::kStamina));
+		}
 	}
 
 	void ActorCopier::CopyBodyTintColor() {
@@ -27,6 +32,35 @@ namespace ActorUtil {
 
 	void ActorCopier::CopyFaceData() {
 		baseCopier.CopyFaceData();
+	}
+
+	// TODO: Fix
+	void ActorCopier::CopyFactions() {
+		if (!destination || !source)
+			return;
+		auto factionChanges = destination->extraList.GetByType<ExtraFactionChanges>();
+		if (factionChanges)
+			factionChanges->factionChanges.clear();
+
+		auto hasFaction = [=](TESFaction* faction, uint8_t rank) {
+			TESNPC* destinationBase = destination->GetActorBase();
+			if (destinationBase)
+				for (FACTION_RANK f : destinationBase->factions)
+					if (f.faction == faction && f.rank == rank)
+						return true;
+			return false;
+		};
+
+		auto addFactionsToDestination = [=](TESFaction* faction, uint8_t rank) {
+			auto factionInfo = FACTION_RANK();
+			factionInfo.faction = faction;
+			factionInfo.rank = rank;
+			if (!hasFaction(faction, rank) && factionChanges)
+				factionChanges->factionChanges.push_back(factionInfo);
+			return false;
+		};
+		
+		source->VisitFactions(addFactionsToDestination);
 	}
 
 	void ActorCopier::CopyGenderAnimations() {
@@ -46,12 +80,19 @@ namespace ActorUtil {
 	}
 
 	void ActorCopier::CopyRace() {
-		destination->RE::Actor::SwitchRace(source->race, false);
+		if (destination && source && source->race)
+			destination->RE::Actor::SwitchRace(source->race, false);
 		baseCopier.CopyRace();
 	}
 
 	void ActorCopier::CopySex() {
 		baseCopier.CopySex();
+	}
+
+	void ActorCopier::CopySkills() {
+		if (destination && source)
+			for (ActorValue av = ActorValue::kOneHanded; av < ActorValue::kHealth; av++)
+				destination->SetActorValue(av, source->GetActorValue(av));
 	}
 
 	void ActorCopier::CopySkin() {
@@ -65,21 +106,11 @@ namespace ActorUtil {
 	ActorCopier::~ActorCopier() {
 		baseCopier.~NPCCopier();
 	}
-	
-	void AddItem(Actor* actor, TESForm* item, uint32_t count) {
-		using func_t = decltype(&AddItem);
-		REL::Relocation<func_t> func{ REL::ID(55616) };
-		func(actor, item, count);
-	}
 
 	void AddSpellsFromList(Actor* actor, BSTArray<SpellItem*> spells) {
-		for (SpellItem* spell : spells)
-			actor->AddSpell(spell);
-	}
-
-	void AddSpellsFromList(Actor* actor, BSTSmallArray<SpellItem*> spells) {
-		for (SpellItem* spell : spells)
-			actor->AddSpell(spell);
+		if (actor)
+			for (SpellItem* spell : spells)
+				actor->AddSpell(spell);
 	}
 
 	BSTArray<BGSPerk*> GetSkillPerks(Actor* actor) {
@@ -107,15 +138,15 @@ namespace ActorUtil {
 	}
 
 	void RemoveAllAddedSpells(Actor* actor) {
-		if (!actor)
-			return;
-		for (SpellItem* spell : actor->addedSpells)
-			actor->RemoveSpell(spell);
+		if (actor)
+			for (SpellItem* spell : actor->addedSpells)
+				actor->RemoveSpell(spell);
 	}
 
 	void RemoveSkillPerks(Actor* actor) {
-		for (BGSPerk* perk : GetSkillPerks(actor))
-			actor->RemovePerk(perk);
+		if (actor)
+			for (BGSPerk* perk : GetSkillPerks(actor))
+				actor->RemovePerk(perk);
 	}
 
 	void RemoveSpellsExceptWhitelisted(Actor* actor, BSTArray<SpellItem*> whitelist) {
@@ -123,23 +154,19 @@ namespace ActorUtil {
 	}
 
 	void RemoveBlacklistedSpells(Actor* actor, BSTArray<SpellItem*> blacklist) {
-		for (SpellItem* spell : blacklist)
-			actor->RemoveSpell(spell);
+		if (actor)
+			for (SpellItem* spell : blacklist)
+				actor->RemoveSpell(spell);
 	}
 
 	void ResetSkeleton(Actor* actor) {
-		if (actor->currentProcess) {
+		if (actor && actor->currentProcess) {
 			actor->currentProcess->Set3DUpdateFlag(RESET_3D_FLAGS::kSkeleton);
 		}
 	}
 
 	void SexChange(Actor* actor) {
-		NPCUtil::SexChange(actor->GetActorBase());
-	}
-
-	void UpdateAppearance(Actor* actor) {
-		using func_t = decltype(&UpdateAppearance);
-		REL::Relocation<func_t> func{ REL::ID(37831) };
-		return func(actor);
+		if (actor)
+			NPCUtil::SexChange(actor->GetActorBase());
 	}
 }

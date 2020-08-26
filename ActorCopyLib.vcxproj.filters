@@ -54,9 +54,6 @@
     <ClCompile Include="test\Test.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="src\TintMaskUtil.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ActorUtil.h">
