@@ -23,7 +23,7 @@ An SKSE plugin for Skyrim Special Edition that provides a Papyrus library for ef
 
 # Credits
 
-* crumpmasterjc - ActorCopyLib
+* covey-j - ActorCopyLib
 * [Ryan-rsm-McKenzie (SniffleMan)](https://github.com/Ryan-rsm-McKenzie) - CommonLibSSE and the example plugin I based ActorCopyLib on
 * SKSE team - SKSE
 * Bethesda Softworks - Skyrim Special Edition
